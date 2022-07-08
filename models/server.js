@@ -14,6 +14,7 @@ class Server {
     this.paths = {
       users: '/api/users',
       games: '/api/games',
+      histories: '/api/histories',
     };
 
     // Http server
@@ -40,6 +41,7 @@ class Server {
   routes() {
     this.app.use(this.paths.users, require('../routes/users.routes'));
     this.app.use(this.paths.games, require('../routes/games.routes'));
+    this.app.use(this.paths.histories, require('../routes/histories.routes'));
   }
 
   execute() {
