@@ -36,6 +36,13 @@ class Server {
     // Configurar cors
     this.app.use(cors());
     this.app.use(express.json());
+    this.app.use((req, res, next) => {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE');
+      res.setHeader('Access-Control-Allow-Headers', '*');
+
+      next();
+    });
   }
 
   routes() {
