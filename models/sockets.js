@@ -1,3 +1,5 @@
+const gamesModels = require('../modelsDB/games.models');
+
 /* eslint-disable no-unused-vars */
 class Sockets {
   constructor(io) {
@@ -12,11 +14,13 @@ class Sockets {
       console.log('cliente conectado', socket.id);
 
       socket.on('movePiece', (xFrom, yFrom, xTo, yTo) => {
-        // console.log({
-        //   xFrom, yFrom, xTo, yTo,
-        // });
-
         this.io.emit('movePieceBack', xFrom, yFrom, xTo, yTo);
+      });
+
+      socket.on('boardChange', async (board, roomCode) => {
+        const game = await gamesModels.findOne({ roomCode });
+        game.positions = board;
+        game.save();
       });
     });
   }
