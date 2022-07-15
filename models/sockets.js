@@ -24,6 +24,13 @@ class Sockets {
 
         this.io.emit('boardChangedBack', board);
       });
+
+      socket.on('requestBoard', async (getBoard, roomCode) => {
+        if (getBoard === 'getBoard') {
+          const game = await gamesModels.findOne({ roomCode });
+          socket.emit('savedBoard', game.board);
+        }
+      });
     });
   }
 }
