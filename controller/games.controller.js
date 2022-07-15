@@ -23,8 +23,18 @@ const handlerGetActiveGames = async (req, res) => {
   return res.json(games);
 };
 
+const handlerJoinGame = async (req, res) => {
+  const { roomCode, player2 } = req.body;
+  const game = await gamesModels.findOne({ roomCode });
+  game.player2 = player2;
+  await game.save();
+
+  return res.json(game);
+};
+
 module.exports = {
   handlerCreateGame,
   handlerUpdateGame,
   handlerGetActiveGames,
+  handlerJoinGame,
 };

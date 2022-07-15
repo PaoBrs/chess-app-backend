@@ -21,6 +21,8 @@ class Sockets {
         const game = await gamesModels.findOne({ roomCode });
         game.positions = board;
         game.save();
+
+        this.io.emit('boardChangedBack', board);
       });
     });
   }
