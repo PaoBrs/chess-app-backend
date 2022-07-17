@@ -8,6 +8,7 @@ const GameSchema = new mongoose.Schema({
   history: [{ type: String }],
   result: { type: String, enum: ['player1', 'player2', 'tie', 'pending'], default: 'pending' },
   isCompleted: { type: Boolean, default: false },
+  turn: { type: String, enum: ['white', 'black'], default: 'white' },
 
 });
 

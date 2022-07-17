@@ -11,24 +11,23 @@ class Sockets {
   socketEvents() {
     // On connection
     this.io.on('connection', (socket) => {
-      console.log('cliente conectado', socket.id);
-
       socket.on('movePiece', (xFrom, yFrom, xTo, yTo) => {
         this.io.emit('movePieceBack', xFrom, yFrom, xTo, yTo);
       });
 
-      socket.on('boardChange', async (board, roomCode) => {
+      socket.on('boardChange', async (board, roomCode, turn) => {
         const game = await gamesModels.findOne({ roomCode });
         game.positions = board;
+        game.turn = turn;
         game.save();
 
-        this.io.emit('boardChangedBack', board);
+        this.io.emit('boardChangedBack', board, turn);
       });
 
       socket.on('requestBoard', async (getBoard, roomCode) => {
         if (getBoard === 'getBoard') {
           const game = await gamesModels.findOne({ roomCode });
-          socket.emit('savedBoard', game.board);
+          socket.emit('savedBoard', game.positions, game.turn);
         }
       });
     });
