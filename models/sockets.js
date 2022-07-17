@@ -30,6 +30,18 @@ class Sockets {
           socket.emit('savedBoard', game.positions, game.turn);
         }
       });
+
+      socket.on('createGame', async (event) => {
+        if (event === 'newGameCreated') {
+          const games = await gamesModels.find({ isCompleted: false });
+          this.io.emit('refreshCreatedGames', games);
+        }
+      });
+
+      socket.on('playerConnected', async (roomCode, player1, player2, username) => {
+        const message = `${player1 !== '' ? `${player1} connected` : `${player1} Not connected`}  |  ${player2 !== '' ? `${player2} connected` : `${player2} Not connected`} `;
+        this.io.emit('playerConnectedBack', player1, player2, message);
+      });
     });
   }
 }
